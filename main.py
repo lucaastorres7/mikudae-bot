@@ -3,12 +3,10 @@ from discord.ext import commands
 import logging
 import os
 from dotenv import load_dotenv
-import aiohttp
 
 load_dotenv()
 
-token = os.getenv('DISCORD_TOKEN')
-BACKEND_URL = os.getenv('BACKEND_URL')
+TOKEN = os.getenv('DISCORD_TOKEN')
 
 logging.basicConfig(
   level=logging.ERROR,
@@ -30,16 +28,10 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 @bot.event
 async def on_ready():
   print(f'{bot.user.name} is ready to be used!')
-
-@bot.command()
-async def wa(ctx):
   try:
-    async with aiohttp.ClientSession() as session:
-      async with session.get(f'{BACKEND_URL}/characters/1') as res:
-        data = await res.json()
-        await ctx.send(data['name'])
+    await bot.load_extension('commands.infomarry')
+    print('Commands loaded successfully.')
   except Exception as e:
-    await ctx.send('Mikudae is going through tough times right now. 😔')
-    logging.error(f'{e}') 
+    print(f'Failed to load commands: {e}')
 
-bot.run(token, log_handler=handler, log_level=logging.ERROR)
+bot.run(TOKEN, log_handler=handler, log_level=logging.ERROR)
