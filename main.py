@@ -30,6 +30,7 @@ async def on_ready():
   print(f'{bot.user.name} is ready to be used!')
   try:
     await bot.load_extension('commands.infomarry')
+    await bot.load_extension('commands.rolls')
     print('Commands loaded successfully.')
   except Exception as e:
     print(f'Failed to load commands: {e}')
